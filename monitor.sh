@@ -5,6 +5,7 @@ touch /tmp/sendmail.txt;
 RECIPIENT=$1
 SENDER=$2
 SIGNATURE=$3
+TITLE=$4
 
 Usage(){
 
@@ -14,11 +15,11 @@ Monitor blocking of new IPs in fail2ban. Usable only on Zimbra or server with po
 
 Usage:
 
-bash monitor.sh RECIPIENT SENDER "SIGNATURE"
+bash monitor.sh RECIPIENT SENDER "SIGNATURE" TITLE
 
 Example:
 
-bash monitor.sh teste@dominio.com.br root@hostname.com.br "Your love."
+bash monitor.sh teste@dominio.com.br root@hostname.com.br "Your love." "Server1"
 
 EOF
 
@@ -55,7 +56,7 @@ fi;
 
 cat <<EOF | /opt/zimbra/common/sbin/sendmail -i $RECIPIENT 
 Subject: Monitoramento de bloqueio de IPs
-From: Monitoracao $(hostname) <$SENDER>
+From: $TITLE <$SENDER>
 To: $RECIPIENT
 
 Prezados,
