@@ -2,9 +2,32 @@
 
 # Inicializar arquivos e variáveis
 touch /tmp/sendmail.txt;
-SIGNATURE="Sender Signature"
-RECIPIENT="recipientemail@email.com.br"
-SENDER="root@server.com.br"
+RECIPIENT=$1
+SENDER=$2
+SIGNATURE=$3
+
+Usage(){
+
+cat << EOF
+
+Monitor blocking of new IPs in fail2ban. Usable only on Zimbra or server with postfix email.
+
+Usage:
+
+bash monitor.sh RECIPIENT SENDER "SIGNATURE"
+
+Example:
+
+bash monitor.sh teste@dominio.com.br root@hostname.com.br "Your love."
+
+EOF
+
+}
+
+if [[ -z ${RECIPIENT} ]] || [[ -z ${SENDER} ]] || [[ -z ${SIGNATURE} ]]; then
+   Usage;
+   exit 2;
+fi;
 
 # Verifica se a lista de IPs bloqueados existe
 if [ -e /tmp/ips_atuais.txt ]; then
@@ -32,7 +55,7 @@ fi;
 
 cat <<EOF | /opt/zimbra/common/sbin/sendmail -i $RECIPIENT 
 Subject: Monitoramento de bloqueio de IPs
-From: Monitoracao <$SENDER>
+From: Monitoracao $(hostname) <$SENDER>
 To: $RECIPIENT
 
 Prezados,
@@ -40,4 +63,3 @@ Prezados,
 $(cat /tmp/sendmail.txt && rm -f /tmp/sendmail.txt)
 
 EOF
-
