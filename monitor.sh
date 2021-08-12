@@ -32,7 +32,7 @@ fi;
 
 cat <<EOF | /opt/zimbra/common/sbin/sendmail -i $RECIPIENT 
 Subject: Monitoramento de bloqueio de IPs
-From: Monitoracao Sepaco <$SENDER>
+From: Monitoracao <$SENDER>
 To: $RECIPIENT
 
 Prezados,
