@@ -33,7 +33,7 @@ fi;
 # Verifica se a lista de IPs bloqueados existe
 if [ -e /tmp/ips_atuais.txt ]; then
 	echo "Arquivo existe. Validando se a lista de IPs não está vazia...";
-	count=$(cat /tmp/ips_atuais.txt | egrep "*" | wc -l);
+	count=$(egrep "*" /tmp/ips_atuais.txt | wc -l);
 	if [ $count -eq 0 ]; then
 		echo "Arquivo de IPs está vazio. Inicializando nova contagem de IPs";
 		iptables -S | grep DROP | awk '{ print $4 }' >> /tmp/ips_atuais.txt;
